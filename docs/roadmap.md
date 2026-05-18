@@ -78,6 +78,7 @@ cvm++/
 - [ ] Set up C++ development environment (g++/clang++, VSCode/CLion)
 - [ ] Initialize Git repository
 - [ ] Set up CMake build system (optional but recommended)
+- [ ] Set up CI/CD pipeline (e.g., GitHub Actions) for automated testing
 - [ ] Read Chapters 1–4 of *Crafting Interpreters* by Robert Nystrom
 - [ ] Understand the pipeline: **Source → Tokens → AST → Bytecode → VM**
 
@@ -264,7 +265,8 @@ while not at end:
 return EOF_TOKEN
 ```
 
-#### Testing the Lexer
+#### TDD & Testing the Lexer
+Write unit tests for the Lexer before moving on.
 ```
 Input:  "let x = 10 + 20;"
 Output: [LET, IDENTIFIER("x"), EQUAL, NUMBER(10), PLUS, NUMBER(20), SEMICOLON, EOF]
@@ -383,7 +385,11 @@ class Parser {
 };
 ```
 
-#### Testing the Parser
+#### Error Recovery
+Implement Panic Mode in the parser. When a syntax error occurs, report the error and synchronize the parser state (e.g., skip to the next statement boundary like `;` or `}`) instead of crashing. This is crucial for reporting multiple errors in one pass.
+
+#### TDD & Testing the Parser
+Write unit tests for AST generation and error recovery.
 ```
 Input Tokens: [LET, ID("x"), EQUAL, NUMBER(10), PLUS, NUMBER(20), SEMICOLON]
 
@@ -584,6 +590,9 @@ Build a `disassemble()` function that prints human-readable bytecode:
 0009  OP_PRINT
 0010  OP_HALT
 ```
+
+#### TDD & Testing the Compiler
+Write unit tests to verify ASTs are compiled into the correct sequence of opcodes, especially verifying control flow jumps.
 
 #### ✅ Milestone: Compiler produces correct bytecode for all sample scripts, disassembler works
 

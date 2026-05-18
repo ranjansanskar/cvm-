@@ -1,0 +1,33 @@
+// arithmetic.cvm — Exercises all four arithmetic operators
+// and operator precedence (*/  before  +-).
+//
+// Expected output:
+//   30    (10 + 20)
+//   10    (30 - 20)
+//   200   (10 * 20)
+//   5     (100 / 20)
+//   70    (10 + 20 * 3)   — multiplication before addition
+//   3     (10 - 3 * 2 + 2 - 3)
+
+let a = 10;
+let b = 20;
+
+let add = a + b;
+print add;          // 30
+
+let sub = b - a;
+print sub;          // 10
+
+let mul = a * b;
+print mul;          // 200
+
+let div = 100 / b;
+print div;          // 5
+
+// Operator precedence: * before +
+let prec = a + b * 3;
+print prec;         // 70
+
+// Complex expression
+let complex = a - 3 * 2 + 2 - 3;
+print complex;      // 3

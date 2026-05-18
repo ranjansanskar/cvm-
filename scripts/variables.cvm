@@ -1,0 +1,30 @@
+// variables.cvm — Demonstrates variable declaration (let) and re-assignment.
+//
+// Expected output:
+//   10    (initial x)
+//   15    (x after += 5 via re-assignment)
+//   1     (flag is true)
+//   0     (flag toggled to false)
+
+let x = 10;
+print x;        // 10
+
+x = x + 5;
+print x;        // 15
+
+// Boolean variables
+let flag = true;
+print flag;     // 1
+
+flag = false;
+print flag;     // 0
+
+// Chained assignment expressions
+let a = 1;
+let b = 2;
+let c = a + b;
+a = c * 2;
+b = a - c;
+print a;        // 6
+print b;        // 3
+print c;        // 3

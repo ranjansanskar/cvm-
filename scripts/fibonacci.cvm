@@ -1,0 +1,20 @@
+// fibonacci.cvm — Iterative Fibonacci sequence (first 10 terms).
+//
+// Expected output (one per line):
+//   0  1  1  2  3  5  8  13  21  34
+
+let a = 0;
+let b = 1;
+let n = 10;   // how many terms to print
+let i = 0;
+
+while (i < n) {
+    print a;
+
+    // Swap: temp = a + b; a = b; b = temp
+    let temp = a + b;
+    a = b;
+    b = temp;
+
+    i = i + 1;
+}

@@ -1,0 +1,42 @@
+name: CVM++ CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Configure with CMake ────────────────────────────────────────────
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+                -DCMAKE_BUILD_TYPE=Debug \
+                -DBUILD_TESTS=ON
+
+      # ── 3. Build ───────────────────────────────────────────────────────────
+      - name: Build
+        run: cmake --build build --parallel
+
+      # ── 4. Run unit tests ──────────────────────────────────────────────────
+      - name: Run tests
+        working-directory: build
+        run: ctest --output-on-failure
+
+      # ── 5. Smoke-test the binary with a sample script ─────────────────────
+      - name: Smoke test — run hello.cvm
+        run: ./build/cvm scripts/hello.cvm

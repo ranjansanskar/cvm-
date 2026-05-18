@@ -1,0 +1,50 @@
+// control_flow.cvm — Demonstrates if/else and while loops.
+//
+// Expected output:
+//   1     (sum > 25 is true)
+//   0     (i=0)
+//   1     (i=1)
+//   2     (i=2)
+//   3     (i=3)
+//   4     (i=4)
+//   0     (even: 0 % 2 == 0, represented as !(0 != 0))
+//   1     (odd: 1)
+//   0     (even: 2)
+//   1     (odd: 3)
+//   0     (even: 4)
+
+// ── if / else ──────────────────────────────────────────────────────────────
+let x = 10;
+let y = 20;
+let sum = x + y;
+
+if (sum > 25) {
+    print 1;    // taken:  30 > 25
+} else {
+    print 0;
+}
+
+// ── basic while loop ───────────────────────────────────────────────────────
+let i = 0;
+while (i < 5) {
+    print i;
+    i = i + 1;
+}
+
+// ── nested if inside while — even / odd ────────────────────────────────────
+let n = 0;
+while (n < 5) {
+    // CVM has no modulo operator, so we use integer subtraction trick:
+    // even if  (n - (n / 2) * 2) == 0
+    let half   = n / 2;
+    let double = half * 2;
+    let rem    = n - double;
+
+    if (rem == 0) {
+        print 0;   // even
+    } else {
+        print 1;   // odd
+    }
+
+    n = n + 1;
+}

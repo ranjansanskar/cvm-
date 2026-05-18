@@ -1,0 +1,10 @@
+// hello.cvm — The simplest possible CVM++ program.
+// Demonstrates: variable declaration, arithmetic, print.
+
+let greeting = 1;
+print greeting;
+
+let x = 10;
+let y = 20;
+let sum = x + y;
+print sum;
