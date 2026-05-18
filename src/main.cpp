@@ -11,12 +11,14 @@
 #include <string>
 #include "lexer.h"
 #include "parser.h"
+#include "compiler.h"
+#include "vm.h"
 
 // ── Version ──────────────────────────────────────────────────────────────────
 static constexpr const char* CVM_VERSION = "0.1.0";
 
-// ── Forward declarations (implemented in later phases) ───────────────────────
-void runSource(const std::string& source);
+// ── Forward declarations ─────────────────────────────────────────────────────
+void runSource(const std::string& source, VM& vm);
 void runREPL();
 void runFile(const std::string& path);
 
@@ -39,25 +41,15 @@ int main(int argc, char* argv[]) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Stub: run a string of CVM source code through the pipeline.
-//  Replaced incrementally as phases are implemented.
+//  Run a string of CVM source code through the pipeline.
 // ─────────────────────────────────────────────────────────────────────────────
-void runSource(const std::string& source) {
+void runSource(const std::string& source, VM& vm) {
     // Phase 2: Lexer
     Lexer lexer(source);
     auto tokens = lexer.tokenize();
-    
-    std::cout << "[DEBUG] === Tokens ===\n";
-    for (const auto& token : tokens) {
-        std::cout << "[DEBUG] " << tokenTypeName(token.type);
-        if (token.type == TokenType::IDENTIFIER || token.type == TokenType::NUMBER || token.type == TokenType::ERROR) {
-            std::cout << "(" << token.lexeme << ")";
-        }
-        std::cout << " [line " << token.line << "]\n";
-    }
 
     if (lexer.hadError()) {
-        std::cout << "Lexing failed due to errors.\n";
+        std::cerr << "Lexing failed due to errors.\n";
         return;
     }
 
@@ -65,15 +57,29 @@ void runSource(const std::string& source) {
     Parser parser(tokens);
     auto ast = parser.parse();
     
-    if (parser.hadError()) {
-        std::cout << "Parsing failed due to errors.\n";
+    if (parser.hadError() || !ast) {
+        std::cerr << "Parsing failed due to errors.\n";
         return;
     }
     
-    std::cout << "[DEBUG] AST generated successfully.\n";
+    // Phase 5: Compiler
+    Compiler compiler;
+    Chunk chunk = compiler.compile(*ast);
+    
+    if (compiler.hadError()) {
+        std::cerr << "Compilation failed due to errors.\n";
+        return;
+    }
 
-    // TODO (Phase 5): Compiler compiler;      auto chunk  = compiler.compile(*ast);
-    // TODO (Phase 6): VM      vm;             vm.execute(chunk);
+    // Uncomment to see disassembled bytecode:
+    // chunk.disassemble("Bytecode");
+
+    // Phase 6: VM
+    try {
+        vm.execute(chunk);
+    } catch (const RuntimeError& e) {
+        std::cerr << "Runtime Error: " << e.what() << "\n";
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -82,6 +88,8 @@ void runSource(const std::string& source) {
 void runREPL() {
     std::string line;
     std::cout << "Type 'exit' to quit, 'help' for usage hints.\n\n";
+
+    VM vm; // Persistent VM across REPL lines
 
     while (true) {
         std::cout << ">>> ";
@@ -101,7 +109,7 @@ void runREPL() {
             continue;
         }
         if (line.empty()) continue;
-        runSource(line);
+        runSource(line, vm);
     }
 }
 
@@ -117,5 +125,8 @@ void runFile(const std::string& path) {
 
     std::ostringstream ss;
     ss << file.rdbuf();
-    runSource(ss.str());
+    
+    VM vm;
+    runSource(ss.str(), vm);
 }
+
