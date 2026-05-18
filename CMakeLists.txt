@@ -11,6 +11,7 @@ add_executable(cvm
     src/main.cpp
     src/lexer.cpp
     src/parser.cpp
+    src/opcode.cpp
     src/compiler.cpp
     src/vm.cpp
 )
@@ -28,6 +29,7 @@ if(BUILD_TESTS)
     add_library(cvm_lib STATIC
         src/lexer.cpp
         src/parser.cpp
+        src/opcode.cpp
         src/compiler.cpp
         src/vm.cpp
     )
@@ -42,6 +44,7 @@ if(BUILD_TESTS)
 
     add_cvm_test(test_lexer    tests/test_lexer.cpp)
     add_cvm_test(test_parser   tests/test_parser.cpp)
+    add_cvm_test(test_opcode   tests/test_opcode.cpp)
     add_cvm_test(test_compiler tests/test_compiler.cpp)
     add_cvm_test(test_vm       tests/test_vm.cpp)
 endif()
