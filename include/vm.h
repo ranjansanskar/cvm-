@@ -29,6 +29,10 @@ public:
     // Reset VM state (stack + globals) between executions in REPL mode.
     void reset();
 
+    // Testing helpers
+    Value getGlobal(const std::string& name) const;
+    const std::vector<Value>& getStack() const { return m_stack; }
+
 private:
     // ── Execution state ──────────────────────────────────────
     const Chunk*                             m_chunk   = nullptr;
