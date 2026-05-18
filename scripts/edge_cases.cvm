@@ -1,0 +1,11 @@
+// edge_cases.cvm — Division by zero, undefined variables
+
+// Test 1: Undefined variables
+// Uncomment the line below to test undefined variables
+// print z; 
+
+// Test 2: Division by zero
+let x = 10;
+let y = 0;
+// Note: This should throw a runtime error and halt VM execution.
+print x / y; 

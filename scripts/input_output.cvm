@@ -1,0 +1,5 @@
+// input_output.cvm — Demonstrates input and print keywords
+let x = 0;
+input x;
+let doubled = x * 2;
+print doubled;

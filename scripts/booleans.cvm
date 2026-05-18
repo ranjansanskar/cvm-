@@ -1,0 +1,19 @@
+// booleans.cvm — Demonstrates true, false, ==, !=, !
+let t = true;
+let f = false;
+
+print t; // 1
+print f; // 0
+
+let a = 10;
+let b = 10;
+let c = 20;
+
+print a == b; // 1
+print a != b; // 0
+print a == c; // 0
+print a != c; // 1
+
+print !t; // 0
+print !f; // 1
+print !(a == b); // 0

@@ -1,0 +1,24 @@
+// if_else.cvm — Simple and nested if/else
+let x = 10;
+if (x == 10) {
+    print 1; // 1
+} else {
+    print 0;
+}
+
+if (x > 20) {
+    print 0;
+} else {
+    print 2; // 2
+}
+
+// nested
+if (x == 10) {
+    if (x < 15) {
+        print 3; // 3
+    } else {
+        print 0;
+    }
+} else {
+    print 0;
+}

@@ -1,0 +1,11 @@
+// while_loop.cvm — Counting loop, sum accumulation
+let count = 1;
+let sum = 0;
+
+while (count <= 5) {
+    sum = sum + count;
+    count = count + 1;
+}
+
+print count; // 6
+print sum; // 15
