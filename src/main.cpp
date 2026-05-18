@@ -10,6 +10,7 @@
 #include <sstream>
 #include <string>
 #include "lexer.h"
+#include "parser.h"
 
 // ── Version ──────────────────────────────────────────────────────────────────
 static constexpr const char* CVM_VERSION = "0.1.0";
@@ -60,7 +61,17 @@ void runSource(const std::string& source) {
         return;
     }
 
-    // TODO (Phase 3): Parser  parser(tokens); auto ast    = parser.parse();
+    // Phase 3: Parser
+    Parser parser(tokens);
+    auto ast = parser.parse();
+    
+    if (parser.hadError()) {
+        std::cout << "Parsing failed due to errors.\n";
+        return;
+    }
+    
+    std::cout << "[DEBUG] AST generated successfully.\n";
+
     // TODO (Phase 5): Compiler compiler;      auto chunk  = compiler.compile(*ast);
     // TODO (Phase 6): VM      vm;             vm.execute(chunk);
 }
