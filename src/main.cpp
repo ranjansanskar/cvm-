@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "lexer.h"
 
 // ── Version ──────────────────────────────────────────────────────────────────
 static constexpr const char* CVM_VERSION = "0.1.0";
@@ -41,11 +42,27 @@ int main(int argc, char* argv[]) {
 //  Replaced incrementally as phases are implemented.
 // ─────────────────────────────────────────────────────────────────────────────
 void runSource(const std::string& source) {
-    // TODO (Phase 2): Lexer   lexer(source);  auto tokens = lexer.tokenize();
+    // Phase 2: Lexer
+    Lexer lexer(source);
+    auto tokens = lexer.tokenize();
+    
+    std::cout << "[DEBUG] === Tokens ===\n";
+    for (const auto& token : tokens) {
+        std::cout << "[DEBUG] " << tokenTypeName(token.type);
+        if (token.type == TokenType::IDENTIFIER || token.type == TokenType::NUMBER || token.type == TokenType::ERROR) {
+            std::cout << "(" << token.lexeme << ")";
+        }
+        std::cout << " [line " << token.line << "]\n";
+    }
+
+    if (lexer.hadError()) {
+        std::cout << "Lexing failed due to errors.\n";
+        return;
+    }
+
     // TODO (Phase 3): Parser  parser(tokens); auto ast    = parser.parse();
     // TODO (Phase 5): Compiler compiler;      auto chunk  = compiler.compile(*ast);
     // TODO (Phase 6): VM      vm;             vm.execute(chunk);
-    std::cout << "[stub] Running " << source.size() << " bytes of CVM source.\n";
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
